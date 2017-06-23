@@ -3,6 +3,7 @@
 <head>
 	<title></title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="./oauth.js"></script>
 </head>
 <body>
 <div id="dz-root"></div>
@@ -21,17 +22,12 @@
 
 	$("#deezerLogin").on("click", function(){
 
-		console.log("it works");
-		DZ.login(function(response) {
-		if (response.authResponse) {
-			console.log('Welcome!  Fetching your information.... ');
-			DZ.api('/user/me', function(response) {
-				console.log('Good to see you, ' + response.name + '.');
-			});
-		} else {
-			console.log('User cancelled login or did not fully authorize.');
-		}
-	}, {perms: 'basic_access,email'});
+		
+		OAuth.initialize('fy7hrBW50VLQie5JdFTyjjeLjrw')
+		OAuth.popup('deezer').done(function(result) {
+    	console.log(result)
+    // do some stuff with result
+		})
 
 	});
 
