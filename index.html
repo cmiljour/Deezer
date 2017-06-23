@@ -3,6 +3,7 @@
 <head>
 	<title></title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 </head>
 <body>
 <div id="dz-root"></div>
@@ -14,14 +15,12 @@
 <script type="text/javascript">
 	DZ.init({
 		appId  : '240622',
-		channelUrl : 'https://cmiljour.github.io/Deezer/index3.html'
+		channelUrl : 'https//cmiljour.github.io/Deezer'
 	});
-
-
 
 	$("#deezerLogin").on("click", function(){
 
-		console.log("it works");
+
 		DZ.login(function(response) {
 		if (response.authResponse) {
 			console.log('Welcome!  Fetching your information.... ');
