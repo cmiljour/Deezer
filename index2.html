@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+<div id="dz-root"></div>
+<div>
+	<h1>Test</h1>
+	<button id="deezerLogin">Login to Deezer</button>
+</div>
+<script src="https://e-cdns-files.dzcdn.net/js/min/dz.js"></script>
+<script type="text/javascript">
+	DZ.init({
+		appId  : '240622',
+		channelUrl : 'http://YOUR_DOMAIN/channel.html'
+	});
+
+
+
+	$("#deezerLogin").on("click", function(){
+
+		console.log("it works");
+		DZ.login(function(response) {
+		if (response.authResponse) {
+			console.log('Welcome!  Fetching your information.... ');
+			DZ.api('/user/me', function(response) {
+				console.log('Good to see you, ' + response.name + '.');
+			});
+		} else {
+			console.log('User cancelled login or did not fully authorize.');
+		}
+	}, {perms: 'basic_access,email'});
+
+	});
+
+
+
+
+
+</script>
+
+
+</body>
+</html>
