@@ -3,7 +3,6 @@
 <head>
     <title></title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script type='text/javascript' src='./config.js'></script>
 </head>
 <body id="body">
 <div id="dz-root"></div>
@@ -22,7 +21,8 @@
 <script src="https://e-cdns-files.dzcdn.net/js/min/dz.js"></script>
 <script type="text/javascript">
 
-var mykey = config.MY_KEY;
+require('dotenv').config();
+var apiKey = process.env.MY_KEY;
 
 
 $(document).ready(function() {
@@ -80,7 +80,7 @@ function showPosition(position) {
   }
 
 function getURL(location, tempSetting) {
-  var url = ("https://api.forecast.io/forecast/" + mykey + corysVar);
+  var url = ("https://api.forecast.io/forecast/" + apiKey + corysVar);
  
   getJson(url);
 }
