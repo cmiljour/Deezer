@@ -21,127 +21,100 @@
 <script src="https://e-cdns-files.dzcdn.net/js/min/dz.js"></script>
 <script type="text/javascript">
 
-require('dotenv').config();
-var apiKey = process.env.MY_KEY;
-
-
-$(document).ready(function() {
-  getLocation();
-})
-    DZ.init({
-        appId  : '240622',
-        channelUrl : 'https://cmiljour.github.io/Deezer/index.html',
-        player: {
-            container: 'deezerWidget',
-            width : 800,
-            height : 300,
-            playlist: true,
-            onload : function(){}
-        }
-    });
-    $("#deezerLogin").on("click", function(){
-        DZ.login(function(response) {
-        if (response.authResponse) {
-            console.log('Welcome!  Fetching your information.... ');
-            DZ.api('/user/me', function(response) {
-                console.log('Good to see you, ' + response.name + '.');
-            });
-        } else {
-            console.log('User cancelled login or did not fully authorize.');
-        }
-        }, {perms: 'basic_access,email, offline_access, manage_library_, manage_community, delete_library, listening_history'});
-    });
-
 var corysVar;
-var x = document.getElementById("weather-location");
-function getLocation() {
-  	if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-    } else {
-        x.innerHTML = "Geolocation is not supported by this browser.";
-    }
-}	
-function showPosition(position) {
-    x.innerHTML = "Latitude: " + position.coords.latitude + 
-    "<br>Longitude: " + position.coords.longitude; 
-    corysVar = (position.coords.latitude + "," + position.coords.longitude);
-}
+var weatherIcon;
+var latitude;
+var longitude;
 
-  function httpsLocation() {
-    if (navigator.geolocation) {
-      var x;
-      navigator.geolocation.getCurrentPosition(passLocation);
-    }
-  }
-  function passLocation(position) {
-    corysVar = position.coords.latitude + ", " + position.coords.longitude;
-    setCity(corysVar);
-    getURL(corysVar);
-  }
-
-function getURL(location, tempSetting) {
-  var url = ("https://api.forecast.io/forecast/" + apiKey + corysVar);
- 
-  getJson(url);
-}
-function getJson(url) {
-  
-  $.ajax({
-      format: "jsonp",
-      dataType: "jsonp",
-      url: url,
-      success: function(json) {
-      
-
-      $("#romanticButton").on("click", function(){
-    romanticPlaylist(json.currently.icon);
-      console.log("hi");
-        })
-      }
-    })
-}
-
-var songs;
-function romanticPlaylist(weatherIcon) {
-  console.log(weatherIcon);
-  switch (weatherIcon) {
-    case "clear-day":
-      DZ.player.playPlaylist(2096299244);
-       
-      break;
-    case "clear-night":
-      DZ.player.playPlaylist(2235506522);
-       
-      break;
-    case "rain":
-      DZ.player.playPlaylist(2096299244);
-    
-      break;
-    case "cloudy":
-      DZ.player.playPlaylist(2096299244);
-      
-      break;
-    case "partly-cloudy-day":
-      DZ.player.playPlaylist(2096299244);
-      
-      break;
-    case "partly-cloudy-night":
-      DZ.player.playPlaylist(2247598026);
-       
-      break;
-    case "snow":
-      DZ.player.playPlaylist(2096299244);
-        
-      break;
-    default:
-      break;
-  }
+function getWeather(){
+	var url = "https://api.forecast.io/forecast/2b4b9e2d0c9c7ba61f588616d2967c9c/";
+	$.getJSON(url + corysVar + "?callback=?", function(data){
+		weatherIcon = data.currently.icon;
+		weatherBackgroundChange();
+	});
 };
+
+function weatherBackgroundChange() {
+	  switch (weatherIcon) {
+	    case "clear-day":
+	      document.getElementById("body").style.backgroundImage = 'url("http://img02.deviantart.net/d2c2/i/2005/028/b/6/clear_day_by_juanchis.jpg")';
+	      break;
+	    case "clear-night":
+	      DZ.player.playPlaylist(2235506522);
+	       
+	      break;
+	    case "rain":
+	      DZ.player.playPlaylist(2096299244);
+	    
+	      break;
+	    case "cloudy":
+	      DZ.player.playPlaylist(2096299244);
+	      
+	      break;
+	    case "partly-cloudy-day":
+	      DZ.player.playPlaylist(2096299244);
+	      
+	      break;
+	    case "partly-cloudy-night":
+	      DZ.player.playPlaylist(2247598026);
+	       
+	      break;
+	    case "snow":
+	      DZ.player.playPlaylist(2096299244);
+	        
+	      break;
+	    default:
+	      break;
+	  }
+	};
+
+$.ajax({
+	url: "https://geoip-db.com/jsonp",
+	jsonpCallback: "callback",
+	dataType: "jsonp",
+	success: function( location ) {
+		
+		latitude = location.latitude;
+		longitude = location.longitude;
+		corysVar = latitude + ", " + longitude;
+	},
+	complete: function(location){
+		getWeather();
+
+	}
+});
+
+DZ.init({
+    appId  : '240622',
+    channelUrl : 'https://cmiljour.github.io/Deezer/index.html',
+    player: {
+            container: 'deezerWidget',
+    width : 800,
+    height : 300,
+    playlist: true,
+    onload : function(){}
+}
+});
+
+$("#deezerLogin").on("click", function(){
+    DZ.login(function(response) {
+    if (response.authResponse) {
+        console.log('Welcome!  Fetching your information.... ');
+        DZ.api('/user/me', function(response) {
+            console.log('Good to see you, ' + response.name + '.');
+        });
+    } else {
+        console.log('User cancelled login or did not fully authorize.');
+    }
+    }, {perms: 'basic_access,email, offline_access, manage_library_, manage_community, delete_library, listening_history'});
+});
 
 $("#boredButton").on("click", function(){
         DZ.player.playPlaylist(2096299244);
+        
         });
-       
+
+
 </script>
 </body>
 </html>
