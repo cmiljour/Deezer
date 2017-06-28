@@ -19,15 +19,37 @@
 <br>
 <div id="deezerWidget"></div>
 <script src="https://e-cdns-files.dzcdn.net/js/min/dz.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
 <script type="text/javascript">
 
+
+// Initialize Firebase
+var config = {
+    apiKey: "AIzaSyCHx6YlP0GP_oy1k6JLbPvO5xzbXBYsrIw",
+    authDomain: "deezer-7a4ee.firebaseapp.com",
+    databaseURL: "https://deezer-7a4ee.firebaseio.com",
+    projectId: "deezer-7a4ee",
+    storageBucket: "deezer-7a4ee.appspot.com",
+    messagingSenderId: "149015575448"
+};
+firebase.initializeApp(config);
+
+var THE_KEY;
 var corysVar;
 var weatherIcon;
 var latitude;
 var longitude;
+var database = firebase.database();
+
+function getKey () {
+	database.ref().once('value', function (snap){
+	THE_KEY = snap.val().MY_KEY;
+	});
+};
+
 
 function getWeather(){
-	var url = "https://api.forecast.io/forecast/2b4b9e2d0c9c7ba61f588616d2967c9c/";
+	var url = "https://api.forecast.io/forecast/" + THE_KEY;
 	$.getJSON(url + corysVar + "?callback=?", function(data){
 		weatherIcon = data.currently.icon;
 		weatherBackgroundChange();
@@ -92,7 +114,9 @@ DZ.init({
     width : 800,
     height : 300,
     playlist: true,
-    onload : function(){}
+    onload : function(){
+    	getKey();
+    }
 }
 });
 
