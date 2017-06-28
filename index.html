@@ -40,16 +40,16 @@ var weatherIcon;
 var latitude;
 var longitude;
 var database = firebase.database();
+var url;
 
-function getKey () {
-	database.ref().once('value', function (snap){
+
+database.ref().once('value', function (snap){
 	THE_KEY = snap.val().MY_KEY;
-	});
-};
+});
 
 
 function getWeather(){
-	var url = "https://api.forecast.io/forecast/" + THE_KEY;
+	var url = "https://api.forecast.io/forecast/" + THE_KEY + "/";
 	$.getJSON(url + corysVar + "?callback=?", function(data){
 		weatherIcon = data.currently.icon;
 		weatherBackgroundChange();
@@ -99,9 +99,10 @@ $.ajax({
 		latitude = location.latitude;
 		longitude = location.longitude;
 		corysVar = latitude + ", " + longitude;
+
 	},
 	complete: function(location){
-		getWeather();
+		// getWeather();
 
 	}
 });
@@ -114,13 +115,12 @@ DZ.init({
     width : 800,
     height : 300,
     playlist: true,
-    onload : function(){
-    	getKey();
-    }
+    onload : function(){}
 }
 });
 
 $("#deezerLogin").on("click", function(){
+	getWeather();
     DZ.login(function(response) {
     if (response.authResponse) {
         console.log('Welcome!  Fetching your information.... ');
@@ -131,6 +131,7 @@ $("#deezerLogin").on("click", function(){
         console.log('User cancelled login or did not fully authorize.');
     }
     }, {perms: 'basic_access,email, offline_access, manage_library_, manage_community, delete_library, listening_history'});
+
 });
 
 $("#boredButton").on("click", function(){
