@@ -74,6 +74,7 @@ function weatherBackgroundChange() {
 	      
 	      break;
 	    case "partly-cloudy-day":
+	    console.log("hi");
 	      DZ.player.playPlaylist(2096299244);
 	      
 	      break;
@@ -120,7 +121,6 @@ DZ.init({
 });
 
 $("#deezerLogin").on("click", function(){
-	getWeather();
     DZ.login(function(response) {
     if (response.authResponse) {
         console.log('Welcome!  Fetching your information.... ');
@@ -135,7 +135,8 @@ $("#deezerLogin").on("click", function(){
 });
 
 $("#boredButton").on("click", function(){
-        DZ.player.playPlaylist(2096299244);
+	getWeather();
+        // DZ.player.playPlaylist(2096299244);
         
         });
 
